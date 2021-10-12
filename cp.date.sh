@@ -27,6 +27,9 @@ fi
 while [ $conFinal -ge $((conI+1)) ]
 do
   archivo="${arrayIn[$conI]}";
+  if [ -f $archivo ];
+  then
   init_home;
+  fi
   (( conI++ ))
 done
