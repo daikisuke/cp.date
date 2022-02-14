@@ -1,0 +1,51 @@
+#!/bin/bash
+archivo="";
+conI=0;
+conFinal="$#";
+arrayIn=( "$@" );
+function MSJ_ERROR(){
+ local nameFile="con el archivo $1."
+ if [ "${1}" == "" ];
+ then
+  echo -e "\e[0;31mError\e[0m" > /dev/stderr
+ else 
+  echo -e "\e[0;31m\nError $nameFile\e[0m" > /dev/stderr 
+ fi
+ #echo -e "\e[0;31mError\e[0m" > /dev/stderr
+}
+function init_home {
+if [[ -e "$archivo" ]];
+then
+nameFile="${archivo%.*}";
+extFile="${archivo##*.}";
+fechaFile="`date +"%y%m%d%X"|tr -d ':'`";
+if [[ "$archivo" == *"."* ]]
+then
+  extFile=".$extFile";
+else
+  extFile="";
+fi
+newNameFile="${nameFile}-${fechaFile}${extFile}";
+echo -e "\nCopiando...!";
+cp "$archivo" "$newNameFile";
+echo -e "Original: $archivo\nNuevo Nombre: $newNameFile";
+echo -e "\r\e[0;32mTerminando!.\e[0m";
+else
+echo "El archivo: $archivo, No existe";
+fi
+}
+while [ $conFinal -ge $((conI+1)) ]
+do
+  archivo="${arrayIn[$conI]}";
+  if [ -f $archivo ];
+  then
+    init_home
+  else 
+    MSJ_ERROR "$archivo"
+  fi
+  (( conI++ ))
+done
+if [ ${#contFinal} == 0 ] && [ $conI == 0 ];#Si no lleva ningun fichero marca error
+then
+MSJ_ERROR
+fi
